@@ -1,6 +1,6 @@
 # Hospital Accessibility Management System
 
-A professional 4-person Python + Streamlit project for analysing hospital
+Streamlit project for analysing hospital
 accessibility across Kerala districts.
 
 ## What the project does
@@ -24,15 +24,6 @@ The application combines:
 
 into an interactive accessibility management dashboard.
 
-### Four modules / four team members
-
-| Member | Module | Main work |
-|---|---|---|
-| 1 | About | Dataset loading, data dictionary, KPIs, charts, problem statement |
-| 2 | Accessibility Analyzer | Explainable scoring, weight tuning, hospital comparison |
-| 3 | Map Explorer | Hospital map, district markers, filters, geospatial visualization |
-| 4 | District Analytics | Accessibility scoring, rankings, comparisons, charts |
-| 5 | Hospital Finder | Patient requirements, recommendations, score explanation, CSV/PDF reports |
 
 ## Project structure
 
@@ -151,15 +142,6 @@ real-world healthcare decisions.
 District populations are from the existing project dataset and are labelled as
 2011 population values.
 
-## Suggested presentation flow
-
-1. Explain the healthcare accessibility problem.
-2. Show the dataset and why multiple factors are needed.
-3. Demonstrate Map Explorer.
-4. Demonstrate District Analytics and explain the score.
-5. Demonstrate Hospital Finder with a patient scenario.
-6. Export a CSV/PDF report.
-7. Explain limitations and future improvements.
 
 ## Future improvements
 
