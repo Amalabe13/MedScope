@@ -34,7 +34,8 @@ with c2:
 
 if location_mode == "Hospital's district centroid":
     district_row = districts.loc[districts["district"] == hospital["district"]].iloc[0]
-    ref_lat, ref_lon = float(district_row["centroid_lat"]), float(district_row["centroid_lon"])
+    ref_lat = float(district_row["centroid_lat"])
+    ref_lon = float(district_row["centroid_lon"])
 else:
     c1, c2 = st.columns(2)
     ref_lat = c1.number_input("Reference latitude", value=float(hospital["latitude"]), format="%.5f")
@@ -103,7 +104,10 @@ components = {
     "Emergency": 100 if hospital["emergency"] == "Yes" else 0,
     "Wheelchair": 100 if hospital["wheelchair_access"] == "Yes" else 0,
     "Ambulance": 100 if hospital["ambulance"] == "Yes" else 0,
-    "Other services": sum(hospital[c] == "Yes" for c in ["pharmacy", "laboratory", "blood_bank"]) / 3 * 100,
+    "Other services": sum(
+        hospital[c] == "Yes"
+        for c in ["pharmacy", "laboratory", "blood_bank"]
+    ) / 3 * 100,
     "Specialist": 100 if str(hospital["specialist_doctor"]).strip() else 0,
     "Waiting time": clamp100(100 - float(hospital["avg_waiting_min"]) * 0.8),
     "Rating": clamp100(float(hospital["rating"]) / 5 * 100)
@@ -145,7 +149,12 @@ with left:
         "Contribution": [round(weighted_contributions[k], 2) for k in components]
     })
 
-    st.dataframe(breakdown, hide_index=True, use_container_width=True)
+    st.dataframe(
+        breakdown,
+        hide_index=True,
+        use_container_width=True,
+        height=450
+    )
 
 with right:
     section_title("Contribution to final score")
@@ -153,17 +162,27 @@ with right:
     chart_df = breakdown.sort_values("Contribution")
 
     fig = px.bar(
-        chart_df, x="Contribution", y="Factor", orientation="h",
+        chart_df,
+        x="Contribution",
+        y="Factor",
+        orientation="h",
         labels={"Contribution": "Weighted contribution"}
     )
-    fig.update_traces(marker_color="#3B6E8F", width=0.45)
+
+    fig.update_traces(
+        marker_color="#3B6E8F",
+        width=0.35
+    )
+
     fig.update_layout(
         height=450,
         margin=dict(l=0, r=0, t=10, b=0),
         plot_bgcolor="white",
         paper_bgcolor="white",
-        font=dict(color="#263238")
+        font=dict(color="#263238"),
+        bargap=0.15
     )
+
     st.plotly_chart(fig, use_container_width=True)
 
 st.divider()
@@ -194,13 +213,19 @@ for name in comparison_names:
         "Emergency": 100 if row["emergency"] == "Yes" else 0,
         "Wheelchair": 100 if row["wheelchair_access"] == "Yes" else 0,
         "Ambulance": 100 if row["ambulance"] == "Yes" else 0,
-        "Other services": sum(row[c] == "Yes" for c in ["pharmacy", "laboratory", "blood_bank"]) / 3 * 100,
+        "Other services": sum(
+            row[c] == "Yes"
+            for c in ["pharmacy", "laboratory", "blood_bank"]
+        ) / 3 * 100,
         "Specialist": 100 if str(row["specialist_doctor"]).strip() else 0,
         "Waiting time": clamp100(100 - float(row["avg_waiting_min"]) * 0.8),
         "Rating": clamp100(float(row["rating"]) / 5 * 100)
     }
 
-    score = sum(scores[k] * weights[k] for k in weights) / total_weight
+    score = sum(
+        scores[k] * weights[k]
+        for k in weights
+    ) / total_weight
 
     comparison_rows.append({
         "Hospital": name,
@@ -220,7 +245,11 @@ if len(comparison_df):
         ascending=[False, True]
     )
 
-    st.dataframe(comparison_df, hide_index=True, use_container_width=True)
+    st.dataframe(
+        comparison_df,
+        hide_index=True,
+        use_container_width=True
+    )
 
     fig = px.bar(
         comparison_df.sort_values("Accessibility score"),
@@ -236,13 +265,17 @@ if len(comparison_df):
         labels={"Accessibility score": "Score / 100"}
     )
 
-    fig.update_traces(width=0.35)
+    fig.update_traces(
+        width=0.25
+    )
+
     fig.update_layout(
         height=380,
         margin=dict(l=0, r=0, t=10, b=0),
         plot_bgcolor="white",
         paper_bgcolor="white",
-        font=dict(color="#263238")
+        font=dict(color="#263238"),
+        bargap=0.08
     )
 
     st.plotly_chart(fig, use_container_width=True)
