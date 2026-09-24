@@ -7,7 +7,12 @@ from utils import (
     clamp100, score_label, RATING_COLORS
 )
 
-st.set_page_config(page_title="Accessibility Analyzer", page_icon="Analyzer", layout="wide")
+st.set_page_config(
+    page_title="Accessibility Analyzer",
+    page_icon="Analyzer",
+    layout="wide"
+)
+
 inject_css()
 
 hospitals, districts = load_data()
@@ -23,50 +28,69 @@ section_title("1. Select a hospital and reference location")
 c1, c2 = st.columns(2)
 
 with c1:
-    hospital_name = st.selectbox("Hospital", hospitals["name"].tolist())
-    hospital = hospitals.loc[hospitals["name"] == hospital_name].iloc[0]
+    hospital_name = st.selectbox(
+        "Hospital",
+        hospitals["name"].tolist()
+    )
+    hospital = hospitals.loc[
+        hospitals["name"] == hospital_name
+    ].iloc[0]
 
 with c2:
-    location_mode = st.selectbox(
+    reference_places = {
+        "Chinnakkada, Kollam": (8.88756, 76.58957),
+        "Kollam City Centre": (8.89321, 76.61414),
+        "Kollam Junction": (8.88531, 76.59454),
+        "Kottarakkara": (9.00550, 76.78320),
+        "Kundara": (8.96060, 76.68024),
+        "Karunagappally": (9.05515, 76.53542),
+        "Punalur": (9.01750, 76.92650),
+    }
+
+    reference_location = st.selectbox(
         "Reference location",
-        ["Hospital's district centroid", "Custom coordinates"]
+        list(reference_places.keys())
     )
 
-if location_mode == "Hospital's district centroid":
-    district_row = districts.loc[districts["district"] == hospital["district"]].iloc[0]
-    ref_lat = float(district_row["centroid_lat"])
-    ref_lon = float(district_row["centroid_lon"])
-else:
-    c1, c2 = st.columns(2)
-    ref_lat = c1.number_input("Reference latitude", value=float(hospital["latitude"]), format="%.5f")
-    ref_lon = c2.number_input("Reference longitude", value=float(hospital["longitude"]), format="%.5f")
+    ref_lat, ref_lon = reference_places[reference_location]
 
-distance = float(haversine_km(
-    ref_lat, ref_lon,
-    float(hospital["latitude"]),
-    float(hospital["longitude"])
-))
+distance = float(
+    haversine_km(
+        ref_lat,
+        ref_lon,
+        float(hospital["latitude"]),
+        float(hospital["longitude"])
+    )
+)
 
-st.info(f"Calculated straight-line distance: **{distance:.2f} km**")
+st.info(
+    f"Calculated straight-line distance: **{distance:.2f} km**"
+)
 
 st.divider()
+
 section_title("2. Configure accessibility weights")
 
 st.caption(
     "The weights below are a transparent project model. "
-    "They are not a medical or government standard. The total is automatically normalized."
+    "They are not a medical or government standard. "
+    "The total is automatically normalized."
 )
 
 cols = st.columns(5)
 
 with cols[0]:
     w_distance = st.slider("Distance", 0, 30, 20)
+
 with cols[1]:
     w_beds = st.slider("Bed capacity", 0, 20, 10)
+
 with cols[2]:
     w_icu = st.slider("ICU capacity", 0, 20, 10)
+
 with cols[3]:
     w_emergency = st.slider("Emergency service", 0, 25, 15)
+
 with cols[4]:
     w_wheelchair = st.slider("Wheelchair access", 0, 20, 10)
 
@@ -74,43 +98,114 @@ cols = st.columns(5)
 
 with cols[0]:
     w_ambulance = st.slider("Ambulance", 0, 20, 10)
+
 with cols[1]:
-    w_services = st.slider("Pharmacy + Laboratory + Blood Bank", 0, 20, 10)
+    w_services = st.slider(
+        "Pharmacy + Laboratory + Blood Bank",
+        0,
+        20,
+        10
+    )
+
 with cols[2]:
-    w_specialist = st.slider("Specialist availability", 0, 20, 10)
+    w_specialist = st.slider(
+        "Specialist availability",
+        0,
+        20,
+        10
+    )
+
 with cols[3]:
-    w_waiting = st.slider("Waiting time", 0, 10, 3)
+    w_waiting = st.slider(
+        "Waiting time",
+        0,
+        10,
+        3
+    )
+
 with cols[4]:
-    w_rating = st.slider("Rating", 0, 10, 2)
+    w_rating = st.slider(
+        "Rating",
+        0,
+        10,
+        2
+    )
 
 weights = {
-    "Distance": w_distance, "Beds": w_beds, "ICU": w_icu,
-    "Emergency": w_emergency, "Wheelchair": w_wheelchair,
-    "Ambulance": w_ambulance, "Other services": w_services,
-    "Specialist": w_specialist, "Waiting time": w_waiting,
+    "Distance": w_distance,
+    "Beds": w_beds,
+    "ICU": w_icu,
+    "Emergency": w_emergency,
+    "Wheelchair": w_wheelchair,
+    "Ambulance": w_ambulance,
+    "Other services": w_services,
+    "Specialist": w_specialist,
+    "Waiting time": w_waiting,
     "Rating": w_rating
 }
 
 total_weight = sum(weights.values())
 
 if total_weight == 0:
-    st.error("At least one weight must be greater than zero.")
+    st.error(
+        "At least one weight must be greater than zero."
+    )
     st.stop()
 
 components = {
     "Distance": clamp100(100 - distance * 4),
-    "Beds": clamp100(float(hospital["beds"]) / 10),
-    "ICU": clamp100(float(hospital["icu_beds"]) * 5),
-    "Emergency": 100 if hospital["emergency"] == "Yes" else 0,
-    "Wheelchair": 100 if hospital["wheelchair_access"] == "Yes" else 0,
-    "Ambulance": 100 if hospital["ambulance"] == "Yes" else 0,
-    "Other services": sum(
-        hospital[c] == "Yes"
-        for c in ["pharmacy", "laboratory", "blood_bank"]
-    ) / 3 * 100,
-    "Specialist": 100 if str(hospital["specialist_doctor"]).strip() else 0,
-    "Waiting time": clamp100(100 - float(hospital["avg_waiting_min"]) * 0.8),
-    "Rating": clamp100(float(hospital["rating"]) / 5 * 100)
+
+    "Beds": clamp100(
+        float(hospital["beds"]) / 10
+    ),
+
+    "ICU": clamp100(
+        float(hospital["icu_beds"]) * 5
+    ),
+
+    "Emergency": (
+        100
+        if hospital["emergency"] == "Yes"
+        else 0
+    ),
+
+    "Wheelchair": (
+        100
+        if hospital["wheelchair_access"] == "Yes"
+        else 0
+    ),
+
+    "Ambulance": (
+        100
+        if hospital["ambulance"] == "Yes"
+        else 0
+    ),
+
+    "Other services": (
+        sum(
+            hospital[c] == "Yes"
+            for c in [
+                "pharmacy",
+                "laboratory",
+                "blood_bank"
+            ]
+        ) / 3 * 100
+    ),
+
+    "Specialist": (
+        100
+        if str(hospital["specialist_doctor"]).strip()
+        else 0
+    ),
+
+    "Waiting time": clamp100(
+        100 -
+        float(hospital["avg_waiting_min"]) * 0.8
+    ),
+
+    "Rating": clamp100(
+        float(hospital["rating"]) / 5 * 100
+    )
 }
 
 weighted_contributions = {
@@ -118,24 +213,48 @@ weighted_contributions = {
     for name in weights
 }
 
-overall = round(sum(weighted_contributions.values()), 1)
+overall = round(
+    sum(weighted_contributions.values()),
+    1
+)
+
 classification = score_label(overall)
 
 st.divider()
+
 section_title("3. Explainable accessibility score")
 
 k1, k2, k3, k4, k5 = st.columns(5)
 
 with k1:
-    st.metric("Overall score", f"{overall}/100")
+    st.metric(
+        "Overall score",
+        f"{overall}/100"
+    )
+
 with k2:
-    st.metric("Classification", classification)
+    st.metric(
+        "Classification",
+        classification
+    )
+
 with k3:
-    st.metric("Distance", f"{distance:.2f} km")
+    st.metric(
+        "Distance",
+        f"{distance:.2f} km"
+    )
+
 with k4:
-    st.metric("Hospital rating", f"{hospital['rating']}/5")
+    st.metric(
+        "Hospital rating",
+        f"{hospital['rating']}/5"
+    )
+
 with k5:
-    st.metric("Beds", f"{int(hospital['beds'])}")
+    st.metric(
+        "Beds",
+        f"{int(hospital['beds'])}"
+    )
 
 left, right = st.columns(2)
 
@@ -144,9 +263,18 @@ with left:
 
     breakdown = pd.DataFrame({
         "Factor": list(components.keys()),
-        "Raw score": [round(components[k], 1) for k in components],
-        "Weight": [weights[k] for k in components],
-        "Contribution": [round(weighted_contributions[k], 2) for k in components]
+        "Raw score": [
+            round(components[k], 1)
+            for k in components
+        ],
+        "Weight": [
+            weights[k]
+            for k in components
+        ],
+        "Contribution": [
+            round(weighted_contributions[k], 2)
+            for k in components
+        ]
     })
 
     st.dataframe(
@@ -159,14 +287,18 @@ with left:
 with right:
     section_title("Contribution to final score")
 
-    chart_df = breakdown.sort_values("Contribution")
+    chart_df = breakdown.sort_values(
+        "Contribution"
+    )
 
     fig = px.bar(
         chart_df,
         x="Contribution",
         y="Factor",
         orientation="h",
-        labels={"Contribution": "Weighted contribution"}
+        labels={
+            "Contribution": "Weighted contribution"
+        }
     )
 
     fig.update_traces(
@@ -176,17 +308,30 @@ with right:
 
     fig.update_layout(
         height=450,
-        margin=dict(l=0, r=0, t=10, b=0),
+        margin=dict(
+            l=0,
+            r=0,
+            t=10,
+            b=0
+        ),
         plot_bgcolor="white",
         paper_bgcolor="white",
-        font=dict(color="#263238"),
+        font=dict(
+            color="#263238"
+        ),
         bargap=0.15
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(
+        fig,
+        use_container_width=True
+    )
 
 st.divider()
-section_title("4. Compare hospitals using the same weighting")
+
+section_title(
+    "4. Compare hospitals using the same weighting"
+)
 
 comparison_names = st.multiselect(
     "Select hospitals to compare",
@@ -198,28 +343,76 @@ comparison_names = st.multiselect(
 comparison_rows = []
 
 for name in comparison_names:
-    row = hospitals.loc[hospitals["name"] == name].iloc[0]
 
-    d = float(haversine_km(
-        ref_lat, ref_lon,
-        float(row["latitude"]),
-        float(row["longitude"])
-    ))
+    row = hospitals.loc[
+        hospitals["name"] == name
+    ].iloc[0]
+
+    d = float(
+        haversine_km(
+            ref_lat,
+            ref_lon,
+            float(row["latitude"]),
+            float(row["longitude"])
+        )
+    )
 
     scores = {
         "Distance": clamp100(100 - d * 4),
-        "Beds": clamp100(float(row["beds"]) / 10),
-        "ICU": clamp100(float(row["icu_beds"]) * 5),
-        "Emergency": 100 if row["emergency"] == "Yes" else 0,
-        "Wheelchair": 100 if row["wheelchair_access"] == "Yes" else 0,
-        "Ambulance": 100 if row["ambulance"] == "Yes" else 0,
-        "Other services": sum(
-            row[c] == "Yes"
-            for c in ["pharmacy", "laboratory", "blood_bank"]
-        ) / 3 * 100,
-        "Specialist": 100 if str(row["specialist_doctor"]).strip() else 0,
-        "Waiting time": clamp100(100 - float(row["avg_waiting_min"]) * 0.8),
-        "Rating": clamp100(float(row["rating"]) / 5 * 100)
+
+        "Beds": clamp100(
+            float(row["beds"]) / 10
+        ),
+
+        "ICU": clamp100(
+            float(row["icu_beds"]) * 5
+        ),
+
+        "Emergency": (
+            100
+            if row["emergency"] == "Yes"
+            else 0
+        ),
+
+        "Wheelchair": (
+            100
+            if row["wheelchair_access"] == "Yes"
+            else 0
+        ),
+
+        "Ambulance": (
+            100
+            if row["ambulance"] == "Yes"
+            else 0
+        ),
+
+        "Other services": (
+            sum(
+                row[c] == "Yes"
+                for c in [
+                    "pharmacy",
+                    "laboratory",
+                    "blood_bank"
+                ]
+            ) / 3 * 100
+        ),
+
+        "Specialist": (
+            100
+            if str(
+                row["specialist_doctor"]
+            ).strip()
+            else 0
+        ),
+
+        "Waiting time": clamp100(
+            100 -
+            float(row["avg_waiting_min"]) * 0.8
+        ),
+
+        "Rating": clamp100(
+            float(row["rating"]) / 5 * 100
+        )
     }
 
     score = sum(
@@ -231,18 +424,30 @@ for name in comparison_names:
         "Hospital": name,
         "District": row["district"],
         "Distance (km)": round(d, 2),
-        "Accessibility score": round(score, 1),
+        "Accessibility score": round(
+            score,
+            1
+        ),
         "Class": score_label(score),
         "Beds": int(row["beds"]),
         "ICU": int(row["icu_beds"])
     })
 
-comparison_df = pd.DataFrame(comparison_rows)
+comparison_df = pd.DataFrame(
+    comparison_rows
+)
 
 if len(comparison_df):
+
     comparison_df = comparison_df.sort_values(
-        ["Accessibility score", "Distance (km)"],
-        ascending=[False, True]
+        [
+            "Accessibility score",
+            "Distance (km)"
+        ],
+        ascending=[
+            False,
+            True
+        ]
     )
 
     st.dataframe(
@@ -252,7 +457,9 @@ if len(comparison_df):
     )
 
     fig = px.bar(
-        comparison_df.sort_values("Accessibility score"),
+        comparison_df.sort_values(
+            "Accessibility score"
+        ),
         x="Accessibility score",
         y="Hospital",
         orientation="h",
@@ -262,25 +469,39 @@ if len(comparison_df):
             "Moderate": "#C49A52",
             "Poor": "#B96A6A"
         },
-        labels={"Accessibility score": "Score / 100"}
+        labels={
+            "Accessibility score": "Score / 100"
+        }
     )
 
+    # Thin bars + reduced gap
     fig.update_traces(
         width=0.25
     )
 
     fig.update_layout(
-        height=380,
-        margin=dict(l=0, r=0, t=10, b=0),
+        height=300,
+        margin=dict(
+            l=0,
+            r=0,
+            t=10,
+            b=0
+        ),
         plot_bgcolor="white",
         paper_bgcolor="white",
-        font=dict(color="#263238"),
-        bargap=0.08
+        font=dict(
+            color="#263238"
+        ),
+        bargap=0.02
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(
+        fig,
+        use_container_width=True
+    )
 
 st.divider()
+
 section_title("5. Sensitivity analysis")
 
 st.markdown(
@@ -290,6 +511,7 @@ This demonstrates that the system is **explainable** rather than a black-box
 recommendation.
 
 For example:
+
 - Increase **Emergency** and **Ambulance** for an emergency-focused scenario.
 - Increase **Wheelchair** for a mobility-accessibility scenario.
 - Increase **Distance** for a location-focused scenario.
@@ -299,14 +521,25 @@ For example:
 
 report = pd.DataFrame({
     "Factor": list(components.keys()),
-    "Raw Score": [round(components[k], 2) for k in components],
-    "Weight": [weights[k] for k in components],
-    "Contribution": [round(weighted_contributions[k], 2) for k in components]
+    "Raw Score": [
+        round(components[k], 2)
+        for k in components
+    ],
+    "Weight": [
+        weights[k]
+        for k in components
+    ],
+    "Contribution": [
+        round(weighted_contributions[k], 2)
+        for k in components
+    ]
 })
 
 st.download_button(
     "Download score analysis CSV",
-    report.to_csv(index=False).encode("utf-8"),
+    report.to_csv(
+        index=False
+    ).encode("utf-8"),
     "accessibility_score_analysis.csv",
     "text/csv"
 )
@@ -314,5 +547,6 @@ st.download_button(
 st.info(
     "Important: this prototype is an accessibility information system. "
     "It does not diagnose, triage, or replace medical advice. "
-    "The service fields in the demonstration dataset should be replaced with verified data."
+    "The service fields in the demonstration dataset should be replaced "
+    "with verified data."
 )
