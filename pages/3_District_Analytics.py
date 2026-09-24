@@ -1,4 +1,3 @@
-
 import plotly.express as px
 import streamlit as st
 from utils import (
@@ -109,7 +108,7 @@ with right:
             "Availability (%)": hospitals[c].eq("Yes").mean() * 100
         })
     service_df = __import__("pandas").DataFrame(service_rates)
-    fig = px.bar(service_df, x="Availability (%)", y="Service", orientation="h",
+    fig = px.bar(service_df, x="Availability (%)", y="Service", orientation="h",color_discrete_sequence=[TEAL],
                  labels={"Availability (%)": "Hospitals with service (%)"})
     fig.update_layout(height=420, margin=dict(l=0,r=0,t=10,b=0))
     st.plotly_chart(fig, use_container_width=True)
