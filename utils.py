@@ -6,13 +6,17 @@ import streamlit as st
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
 
-INK = "#141B3C"
-PRIMARY = "#5B3DF6"
-TEAL = "#00C2A8"
-AMBER = "#FFB020"
-CORAL = "#FF5C5C"
-VIOLET = "#C147E9"
-RATING_COLORS = {"Good": TEAL, "Moderate": AMBER, "Poor": CORAL}
+INK = "#263238"
+PRIMARY = "#3B6E8F"
+TEAL = "#4F8A8B"
+AMBER = "#C49A52"
+CORAL = "#B96A6A"
+VIOLET = "#263746"
+GREEN = "#5C9270"
+SLATE = "#71808C"
+BORDER = "#DCE3E8"
+PAGE_BG = "#F5F7F9"
+RATING_COLORS = {"Good": GREEN, "Moderate": AMBER, "Poor": CORAL}
 TYPE_COLORS = {"Government": PRIMARY, "Private": VIOLET}
 
 YES_NO_COLS = [
@@ -197,39 +201,35 @@ def inject_css():
     @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap');
     html, body, [class*="css"] {{ font-family: 'Manrope', sans-serif; }}
     .stApp {{
-        background: linear-gradient(150deg, #F1EEFF 0%, #E8FBF6 45%, #FFF0FA 100%);
-        background-attachment: fixed;
+        background: {PAGE_BG};
     }}
     section[data-testid="stSidebar"] {{
-        background: linear-gradient(180deg, {INK} 0%, #241B5E 100%);
+        background: {VIOLET};
     }}
-    section[data-testid="stSidebar"] * {{ color: #EDEBFF !important; }}
+    section[data-testid="stSidebar"] * {{ color: #F5F7F9 !important; }}
     .hero {{
-        background: linear-gradient(120deg, {PRIMARY} 0%, {VIOLET} 100%);
+        background: {PRIMARY};
         padding: 1.8rem 2.2rem; border-radius: 16px; color: white; margin-bottom: 1.4rem;
-        box-shadow: 0 10px 30px -8px rgba(91,61,246,0.45);
     }}
     .hero h1 {{ margin: 0; font-size: 1.9rem; font-weight: 800; }}
     .hero p {{ margin: .5rem 0 0; font-size: .92rem; opacity: .92; max-width: 850px; line-height: 1.5; }}
     .kpi-card {{
-        background: #FFFFFF; border: 1px solid #EAE6FF; border-top: 4px solid var(--accent);
+        background: #FFFFFF; border: 1px solid {BORDER}; border-top: 4px solid var(--accent);
         border-radius: 12px; padding: .9rem 1.1rem; min-height: 88px;
-        box-shadow: 0 6px 18px -10px rgba(20,27,60,0.25);
     }}
     .kpi-card .label {{ font-size: .72rem; text-transform: uppercase; letter-spacing: .04em;
-                         color: #6B6394; font-weight: 700; }}
+                         color: {SLATE}; font-weight: 700; }}
     .kpi-card .value {{ font-size: 1.55rem; font-weight: 800; color: {INK}; margin-top: .1rem; }}
     .section-title {{
         font-size: 1.08rem; font-weight: 800; color: {INK};
         border-left: 5px solid {PRIMARY}; padding-left: .6rem; margin: .3rem 0 .8rem;
     }}
     .score {{
-        background: #FFFFFF; border: 1px solid #EAE6FF; border-radius: 12px;
+        background: #FFFFFF; border: 1px solid {BORDER}; border-radius: 12px;
         padding: 1rem; text-align: center;
-        box-shadow: 0 6px 18px -10px rgba(20,27,60,0.25);
     }}
     .score .num {{ font-size: 2rem; font-weight: 800; color: {PRIMARY}; }}
-    .small-note {{ color: #6B6394; font-size: .82rem; }}
+    .small-note {{ color: {SLATE}; font-size: .82rem; }}
     </style>
     """, unsafe_allow_html=True)
 
