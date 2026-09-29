@@ -1,10 +1,9 @@
 # MedScope - Hospital Accessibility Management System
 
-A four-page Streamlit project that studies how accessible hospitals are across Kerala districts.
+A Streamlit project that studies how accessible hospitals are across Kerala districts.
 Every team member owns one CSV file and one page, and each page supports adding, viewing, editing,
 deleting, charting and exporting data for that CSV.
 
-Data flow: **Input data → Update CSV → Read / Analyze / View → Visualize**
 
 ## Who owns what
 
@@ -75,19 +74,6 @@ python -m streamlit run Home.py
 | Report | Download a text report (Finder also offers PDF) with timestamp, row count and applied filters, plus the filtered CSV |
 | Robustness | Missing file, empty file, wrong column types, invalid ID and duplicate entries all give friendly messages instead of a traceback |
 
-## Code design
-
-- `csv_manager.py` holds the shared base class `CSVManager`. It keeps the table in a protected
-  `_data` attribute exposed through a read-only `data` property, and provides loading, type cleaning,
-  ID helpers, validation helpers and saving.
-- Every read and write uses `try / except / else / finally`.
-- Saves are atomic: rows are written to a temporary file, checked by reading it back, and only then
-  swapped in with `os.replace`, so the CSV is never left half-written.
-- Each page defines its own manager class that extends `CSVManager`: `ReadinessManager`,
-  `LocationManager`, `DistrictManager` and `DirectoryManager`. The methods (`create`, `search`,
-  `update`, `delete`, `statistics`, `report_text`) return values instead of printing.
-- Each page loads its CSV fresh every time it runs, with no caching.
-- All paths are relative to the project root.
 
 ## Accessibility scoring
 
@@ -134,8 +120,3 @@ Hospital names, districts, coordinates and bed counts come from the original pro
 service and operational fields are illustrative demonstration data, not verified hospital records.
 District figures in `district_profiles.csv` were calculated from the hospital data using a 25 km
 radius around each district centre, with populations from the 2011 census values in the project.
-
-## Screenshots and demo video
-
-- Demo video: add link here
-- Screenshots: add images to a `screenshots/` folder and list them here
