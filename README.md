@@ -1,44 +1,38 @@
-# Hospital Accessibility Management System
+# MedScope - Hospital Accessibility Management System
 
-Streamlit project for analysing hospital
-accessibility across Kerala districts.
+A four-page Streamlit project that studies how accessible hospitals are across Kerala districts.
+Every team member owns one CSV file and one page, and each page supports adding, viewing, editing,
+deleting, charting and exporting data for that CSV.
 
-## What the project does
+Data flow: **Input data → Update CSV → Read / Analyze / View → Visualize**
 
-The application combines:
+## Who owns what
 
-- hospital location
-- hospital type
-- available beds and ICU beds
-- emergency service
-- wheelchair accessibility
-- ambulance availability
-- pharmacy
-- laboratory
-- blood bank
-- specialist doctor
-- average waiting time
-- opening hours
-- rating
-- district population
+| Student | Page | CSV file |
+|---|---|---|
+| Amala B | `pages/1_Analyzer.py` | `data/hospital_readiness.csv` |
+| Megha S | `pages/2_Map_Explorer.py` | `data/hospital_locations.csv` |
+| Aiswarya S | `pages/3_District_Analytics.py` | `data/district_profiles.csv` |
+| Theertha A | `pages/4_Hospital_Finder.py` | `data/hospital_directory.csv` |
 
-into an interactive accessibility management dashboard.
-
+Each page reads and writes only its own CSV. `Home.py` is the landing page and does not touch any CSV.
 
 ## Project structure
 
 ```text
-hospital_accessibility_analyzer/
-├── About.py
+MedScope/
+├── Home.py
+├── csv_manager.py
 ├── utils.py
 ├── requirements.txt
 ├── README.md
-├── PROJECT_GUIDE.md
 ├── .streamlit/
 │   └── config.toml
 ├── data/
-│   ├── hospitals.csv
-│   └── districts.csv
+│   ├── hospital_readiness.csv
+│   ├── hospital_locations.csv
+│   ├── district_profiles.csv
+│   └── hospital_directory.csv
 └── pages/
     ├── 1_Analyzer.py
     ├── 2_Map_Explorer.py
@@ -46,43 +40,80 @@ hospital_accessibility_analyzer/
     └── 4_Hospital_Finder.py
 ```
 
-## Setup on Windows
+## Setup
 
-Open the project folder in VS Code:
+Python 3.10 or newer is required.
+
+Windows (PowerShell):
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-python -m streamlit run About.py
+python -m streamlit run Home.py
 ```
 
-If PowerShell blocks activation, you can run Streamlit directly through the
-virtual environment:
+macOS / Linux:
 
-```powershell
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe -m streamlit run About.py
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m streamlit run Home.py
 ```
+
+## What every page does
+
+| Requirement | How it is done |
+|---|---|
+| Create | Form with validation of required fields, types and ranges, plus duplicate checks (matching ID or same name in the same district) |
+| Read | Sidebar search and filters, sort by any column, summary statistics and a group-by table |
+| Update | Pick a record by ID, edit its fields, and the change is written back to the CSV |
+| Delete | Pick a record, tick "Yes, delete this record", then press Delete |
+| Visualization | At least two chart types per page, built from the current CSV and sidebar filters |
+| Missing data | Sidebar option to exclude rows or fill numbers with the median, with the chosen rule shown on the page |
+| Report | Download a text report (Finder also offers PDF) with timestamp, row count and applied filters, plus the filtered CSV |
+| Robustness | Missing file, empty file, wrong column types, invalid ID and duplicate entries all give friendly messages instead of a traceback |
+
+## Code design
+
+- `csv_manager.py` holds the shared base class `CSVManager`. It keeps the table in a protected
+  `_data` attribute exposed through a read-only `data` property, and provides loading, type cleaning,
+  ID helpers, validation helpers and saving.
+- Every read and write uses `try / except / else / finally`.
+- Saves are atomic: rows are written to a temporary file, checked by reading it back, and only then
+  swapped in with `os.replace`, so the CSV is never left half-written.
+- Each page defines its own manager class that extends `CSVManager`: `ReadinessManager`,
+  `LocationManager`, `DistrictManager` and `DirectoryManager`. The methods (`create`, `search`,
+  `update`, `delete`, `statistics`, `report_text`) return values instead of printing.
+- Each page loads its CSV fresh every time it runs, with no caching.
+- All paths are relative to the project root.
 
 ## Accessibility scoring
 
-### Hospital score
+### Hospital readiness score (Analyzer, default weights)
 
 | Factor | Weight |
 |---|---:|
-| Distance | 20% |
-| Bed capacity | 10% |
-| ICU capacity | 10% |
-| Emergency | 15% |
-| Wheelchair access | 10% |
-| Ambulance | 10% |
-| Pharmacy + Laboratory + Blood Bank | 10% |
-| Specialist availability | 10% |
-| Waiting time | 3% |
-| Rating | 2% |
+| Distance | 25% |
+| ICU capacity | 15% |
+| Emergency | 20% |
+| Wheelchair access | 15% |
+| Ambulance | 15% |
+| Waiting time | 5% |
+| Rating | 5% |
 
-### District score
+The weights can be changed with sliders on the page and are normalised automatically.
+
+### Hospital match score (Finder)
+
+| Factor | Weight |
+|---|---:|
+| Distance | 60% |
+| Pharmacy + Laboratory + Blood Bank | 30% |
+| Opening hours | 10% |
+
+### District score (District Analytics)
 
 | Factor | Weight |
 |---|---:|
@@ -93,63 +124,18 @@ virtual environment:
 | Average waiting time | 5% |
 | Average rating | 5% |
 
-Classification:
+Classification: **Good** 75-100, **Moderate** 50-74.9, **Poor** below 50.
 
-- **Good:** 75–100
-- **Moderate:** 50–74.9
-- **Poor:** below 50
-
-The weights are transparent and editable in `utils.py`.
-
-## Algorithms
-
-### Haversine distance
-
-The system calculates straight-line geographic distance between two latitude /
-longitude points. This is useful for accessibility analysis but is **not the
-same as road travel distance or travel time**.
-
-### Filtering
-
-The Hospital Finder applies patient requirements such as:
-
-- specialist
-- emergency
-- wheelchair access
-- ambulance
-- pharmacy
-- laboratory
-- blood bank
-- minimum beds
-- maximum distance
-
-### Ranking
-
-Matching hospitals are ranked using the explainable hospital accessibility
-score, with distance used as a secondary ordering factor.
+Distances use the Haversine formula, which is straight-line distance and not road travel time.
 
 ## Dataset note
 
-The original project hospital names, districts, coordinates and bed counts are
-retained from the uploaded project.
+Hospital names, districts, coordinates and bed counts come from the original project. The added
+service and operational fields are illustrative demonstration data, not verified hospital records.
+District figures in `district_profiles.csv` were calculated from the hospital data using a 25 km
+radius around each district centre, with populations from the 2011 census values in the project.
 
-The additional service/operational fields were added to make the prototype
-demonstrate the full accessibility workflow. **Those added values are
-illustrative demonstration data, not verified live hospital records.** Replace
-them with official or institutionally verified data before using the system for
-real-world healthcare decisions.
+## Screenshots and demo video
 
-District populations are from the existing project dataset and are labelled as
-2011 population values.
-
-
-## Future improvements
-
-- Replace straight-line distance with road travel time using a routing service.
-- Use verified government/hospital registry data.
-- Add real-time bed availability.
-- Add authentication and role-based access.
-- Store data in SQLite/PostgreSQL instead of CSV.
-- Add ambulance ETA and emergency response time.
-- Add route visualization.
-- Add machine-learning recommendations after collecting reliable historical data.
+- Demo video: add link here
+- Screenshots: add images to a `screenshots/` folder and list them here

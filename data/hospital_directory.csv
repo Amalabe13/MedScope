@@ -1,0 +1,35 @@
+hospital_id,name,district,latitude,longitude,specialist_doctor,pharmacy,laboratory,blood_bank,opening_hours
+H001,Government Medical College Hospital Thiruvananthapuram,Thiruvananthapuram,8.5241,76.9366,Cardiologist,Yes,Yes,Yes,24 Hours
+H002,Sree Chitra Tirunal Institute,Thiruvananthapuram,8.5578,76.9007,Neurologist,No,Yes,Yes,7 AM - 10 PM
+H003,KIMS Hospital Thiruvananthapuram,Thiruvananthapuram,8.5163,76.9427,Orthopedist,Yes,No,No,8 AM - 8 PM
+H004,Cosmopolitan Hospital,Thiruvananthapuram,8.5069,76.9569,Pediatrician,Yes,Yes,Yes,9 AM - 9 PM
+H005,District Hospital Kollam,Kollam,8.8932,76.5924,General Physician,Yes,Yes,No,24 Hours
+H006,Government Medical College Kollam,Kollam,8.9558,76.6141,Dermatologist,No,Yes,No,7 AM - 10 PM
+H007,Upasana Hospital,Kollam,8.8807,76.5871,ENT Specialist,Yes,Yes,Yes,8 AM - 8 PM
+H008,General Hospital Pathanamthitta,Pathanamthitta,9.2646,76.7871,Gynecologist,Yes,No,Yes,9 AM - 9 PM
+H009,Believers Church Medical College Thiruvalla,Pathanamthitta,9.3833,76.5667,Surgeon,Yes,Yes,No,24 Hours
+H010,Government Medical College Alappuzha,Alappuzha,9.4981,76.3388,Pulmonologist,No,Yes,Yes,7 AM - 10 PM
+H011,District Hospital Alappuzha,Alappuzha,9.49,76.32,Cardiologist,Yes,Yes,No,8 AM - 8 PM
+H012,Government Medical College Kottayam,Kottayam,9.5916,76.5222,Neurologist,Yes,Yes,No,9 AM - 9 PM
+H013,Caritas Hospital Kottayam,Kottayam,9.55,76.53,Orthopedist,Yes,No,Yes,24 Hours
+H014,Government Medical College Idukki,Idukki,9.8437,76.9744,Pediatrician,No,Yes,Yes,7 AM - 10 PM
+H015,District Hospital Idukki,Idukki,9.85,76.95,General Physician,Yes,Yes,No,8 AM - 8 PM
+H016,Government Medical College Ernakulam,Ernakulam,10.0546,76.3287,Dermatologist,Yes,Yes,Yes,9 AM - 9 PM
+H017,Amrita Institute of Medical Sciences Kochi,Ernakulam,10.0432,76.2932,ENT Specialist,Yes,Yes,No,24 Hours
+H018,Lakeshore Hospital Kochi,Ernakulam,9.9707,76.3126,Gynecologist,No,No,No,7 AM - 10 PM
+H019,Aster Medcity Kochi,Ernakulam,10.01,76.305,Surgeon,Yes,Yes,Yes,8 AM - 8 PM
+H020,Government Medical College Thrissur,Thrissur,10.5518,76.2015,Pulmonologist,Yes,Yes,Yes,9 AM - 9 PM
+H021,Jubilee Mission Medical College Thrissur,Thrissur,10.5276,76.2144,Cardiologist,Yes,Yes,No,24 Hours
+H022,Government Medical College Palakkad,Palakkad,10.7867,76.6548,Neurologist,No,Yes,Yes,7 AM - 10 PM
+H023,District Hospital Palakkad,Palakkad,10.77,76.65,Orthopedist,Yes,No,No,8 AM - 8 PM
+H024,Government Medical College Manjeri,Malappuram,11.1213,76.1208,Pediatrician,Yes,Yes,No,9 AM - 9 PM
+H025,District Hospital Malappuram,Malappuram,11.051,76.0711,General Physician,Yes,Yes,Yes,24 Hours
+H026,Government Medical College Kozhikode,Kozhikode,11.2588,75.7804,Dermatologist,No,Yes,Yes,7 AM - 10 PM
+H027,Aster MIMS Kozhikode,Kozhikode,11.2745,75.8352,ENT Specialist,Yes,Yes,No,8 AM - 8 PM
+H028,Baby Memorial Hospital Kozhikode,Kozhikode,11.2588,75.7804,Gynecologist,Yes,No,Yes,9 AM - 9 PM
+H029,Government Medical College Wayanad,Wayanad,11.598,76.1391,Surgeon,Yes,Yes,No,24 Hours
+H030,District Hospital Wayanad,Wayanad,11.607,76.085,Pulmonologist,No,Yes,No,7 AM - 10 PM
+H031,Pariyaram Medical College Kannur,Kannur,11.928,75.487,Cardiologist,Yes,Yes,Yes,8 AM - 8 PM
+H032,Government General Hospital Kannur,Kannur,11.8745,75.3704,Neurologist,Yes,Yes,Yes,9 AM - 9 PM
+H033,Government Medical College Kasaragod,Kasaragod,12.5024,75.0103,Orthopedist,Yes,No,No,24 Hours
+H034,District Hospital Kasaragod,Kasaragod,12.4996,74.9869,Pediatrician,No,Yes,Yes,7 AM - 10 PM

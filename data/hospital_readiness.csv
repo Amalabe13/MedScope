@@ -1,0 +1,35 @@
+hospital_id,name,district,latitude,longitude,icu_beds,emergency,wheelchair_access,ambulance,avg_waiting_min,rating
+H001,Government Medical College Hospital Thiruvananthapuram,Thiruvananthapuram,8.5241,76.9366,108,Yes,Yes,Yes,20.0,3.2
+H002,Sree Chitra Tirunal Institute,Thiruvananthapuram,8.5578,76.9007,28,Yes,Yes,Yes,37.0,3.9
+H003,KIMS Hospital Thiruvananthapuram,Thiruvananthapuram,8.5163,76.9427,60,Yes,No,No,104.0,4.6
+H004,Cosmopolitan Hospital,Thiruvananthapuram,8.5069,76.9569,32,Yes,Yes,Yes,21.0,3.4
+H005,District Hospital Kollam,Kollam,8.8932,76.5924,50,Yes,Yes,Yes,88.0,4.1
+H006,Government Medical College Kollam,Kollam,8.9558,76.6141,48,Yes,Yes,Yes,105.0,4.8
+H007,Upasana Hospital,Kollam,8.8807,76.5871,21,Yes,No,Yes,22.0,3.6
+H008,General Hospital Pathanamthitta,Pathanamthitta,9.2646,76.7871,28,Yes,Yes,Yes,89.0,4.3
+H009,Believers Church Medical College Thiruvalla,Pathanamthitta,9.3833,76.5667,54,Yes,Yes,No,56.0,5.0
+H010,Government Medical College Alappuzha,Alappuzha,9.4981,76.3388,70,Yes,Yes,Yes,73.0,3.8
+H011,District Hospital Alappuzha,Alappuzha,9.49,76.32,18,Yes,No,Yes,90.0,4.5
+H012,Government Medical College Kottayam,Kottayam,9.5916,76.5222,63,Yes,Yes,Yes,107.0,3.3
+H013,Caritas Hospital Kottayam,Kottayam,9.55,76.53,36,Yes,Yes,Yes,74.0,4.0
+H014,Government Medical College Idukki,Idukki,9.8437,76.9744,27,Yes,Yes,Yes,41.0,4.7
+H015,District Hospital Idukki,Idukki,9.85,76.95,15,Yes,No,Yes,108.0,3.5
+H016,Government Medical College Ernakulam,Ernakulam,10.0546,76.3287,42,Yes,Yes,Yes,75.0,4.2
+H017,Amrita Institute of Medical Sciences Kochi,Ernakulam,10.0432,76.2932,91,No,Yes,No,92.0,4.9
+H018,Lakeshore Hospital Kochi,Ernakulam,9.9707,76.3126,32,Yes,Yes,No,109.0,3.7
+H019,Aster Medcity Kochi,Ernakulam,10.01,76.305,60,Yes,No,Yes,96.0,4.4
+H020,Government Medical College Thrissur,Thrissur,10.5518,76.2015,100,Yes,Yes,Yes,43.0,3.2
+H021,Jubilee Mission Medical College Thrissur,Thrissur,10.5276,76.2144,90,Yes,Yes,No,60.0,3.9
+H022,Government Medical College Palakkad,Palakkad,10.7867,76.6548,35,Yes,Yes,Yes,77.0,4.6
+H023,District Hospital Palakkad,Palakkad,10.77,76.65,20,Yes,No,Yes,44.0,3.4
+H024,Government Medical College Manjeri,Malappuram,11.1213,76.1208,54,Yes,Yes,Yes,111.0,4.1
+H025,District Hospital Malappuram,Malappuram,11.051,76.0711,30,Yes,Yes,Yes,28.0,4.8
+H026,Government Medical College Kozhikode,Kozhikode,11.2588,75.7804,102,Yes,Yes,Yes,45.0,3.6
+H027,Aster MIMS Kozhikode,Kozhikode,11.2745,75.8352,52,Yes,No,No,112.0,4.3
+H028,Baby Memorial Hospital Kozhikode,Kozhikode,11.2588,75.7804,40,Yes,Yes,Yes,79.0,5.0
+H029,Government Medical College Wayanad,Wayanad,11.598,76.1391,27,Yes,Yes,Yes,96.0,3.8
+H030,District Hospital Wayanad,Wayanad,11.607,76.085,15,Yes,Yes,Yes,63.0,4.5
+H031,Pariyaram Medical College Kannur,Kannur,11.928,75.487,42,Yes,No,Yes,30.0,3.3
+H032,Government General Hospital Kannur,Kannur,11.8745,75.3704,28,Yes,Yes,Yes,47.0,4.0
+H033,Government Medical College Kasaragod,Kasaragod,12.5024,75.0103,24,Yes,Yes,Yes,64.0,4.7
+H034,District Hospital Kasaragod,Kasaragod,12.4996,74.9869,14,Yes,Yes,Yes,31.0,3.5

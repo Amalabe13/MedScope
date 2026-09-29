@@ -1,0 +1,35 @@
+hospital_id,name,district,type,latitude,longitude,beds
+H001,Government Medical College Hospital Thiruvananthapuram,Thiruvananthapuram,Government,8.5241,76.9366,1800
+H002,Sree Chitra Tirunal Institute,Thiruvananthapuram,Government,8.5578,76.9007,400
+H003,KIMS Hospital Thiruvananthapuram,Thiruvananthapuram,Private,8.5163,76.9427,750
+H004,Cosmopolitan Hospital,Thiruvananthapuram,Private,8.5069,76.9569,350
+H005,District Hospital Kollam,Kollam,Government,8.8932,76.5924,500
+H006,Government Medical College Kollam,Kollam,Government,8.9558,76.6141,800
+H007,Upasana Hospital,Kollam,Private,8.8807,76.5871,300
+H008,General Hospital Pathanamthitta,Pathanamthitta,Government,9.2646,76.7871,350
+H009,Believers Church Medical College Thiruvalla,Pathanamthitta,Private,9.3833,76.5667,600
+H010,Government Medical College Alappuzha,Alappuzha,Government,9.4981,76.3388,700
+H011,District Hospital Alappuzha,Alappuzha,Government,9.49,76.32,300
+H012,Government Medical College Kottayam,Kottayam,Government,9.5916,76.5222,900
+H013,Caritas Hospital Kottayam,Kottayam,Private,9.55,76.53,450
+H014,Government Medical College Idukki,Idukki,Government,9.8437,76.9744,300
+H015,District Hospital Idukki,Idukki,Government,9.85,76.95,150
+H016,Government Medical College Ernakulam,Ernakulam,Government,10.0546,76.3287,700
+H017,Amrita Institute of Medical Sciences Kochi,Ernakulam,Private,10.0432,76.2932,1300
+H018,Lakeshore Hospital Kochi,Ernakulam,Private,9.9707,76.3126,400
+H019,Aster Medcity Kochi,Ernakulam,Private,10.01,76.305,670
+H020,Government Medical College Thrissur,Thrissur,Government,10.5518,76.2015,1000
+H021,Jubilee Mission Medical College Thrissur,Thrissur,Private,10.5276,76.2144,1500
+H022,Government Medical College Palakkad,Palakkad,Government,10.7867,76.6548,500
+H023,District Hospital Palakkad,Palakkad,Government,10.77,76.65,250
+H024,Government Medical College Manjeri,Malappuram,Government,11.1213,76.1208,600
+H025,District Hospital Malappuram,Malappuram,Government,11.051,76.0711,300
+H026,Government Medical College Kozhikode,Kozhikode,Government,11.2588,75.7804,1700
+H027,Aster MIMS Kozhikode,Kozhikode,Private,11.2745,75.8352,750
+H028,Baby Memorial Hospital Kozhikode,Kozhikode,Private,11.2588,75.7804,500
+H029,Government Medical College Wayanad,Wayanad,Government,11.598,76.1391,300
+H030,District Hospital Wayanad,Wayanad,Government,11.607,76.085,150
+H031,Pariyaram Medical College Kannur,Kannur,Government,11.928,75.487,700
+H032,Government General Hospital Kannur,Kannur,Government,11.8745,75.3704,400
+H033,Government Medical College Kasaragod,Kasaragod,Government,12.5024,75.0103,300
+H034,District Hospital Kasaragod,Kasaragod,Government,12.4996,74.9869,150
