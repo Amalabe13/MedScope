@@ -7,6 +7,7 @@ from fpdf import FPDF
 from fpdf.enums import XPos, YPos
 from csv_manager import CSVManager, EXCLUDE_ROWS, FILL_MEDIAN
 from utils import (
+    section_nav, keep_widget_state,
     inject_css, hero, section_title, kpi_card, flash, show_flash, load_manager,
     missing_notice, style_chart, haversine_km, clamp100, yes_score, score_label,
     safe_number, choice_index, DISTRICTS, SPECIALISTS, OPENING_HOURS, YES_NO,
@@ -15,6 +16,7 @@ from utils import (
 
 st.set_page_config(page_title="Hospital Finder", page_icon="🔎", layout="wide")
 inject_css()
+keep_widget_state()
 
 FACILITIES = {"Pharmacy": "pharmacy", "Laboratory": "laboratory", "Blood bank": "blood_bank"}
 
@@ -357,18 +359,19 @@ raw = manager.search(search, picked_districts, specialist, [FACILITIES[f] for f 
 analysis = manager.apply_missing_strategy(raw, strategy)
 missing_notice(manager, raw, strategy)
 
-tabs = st.tabs(["Find hospitals", "Records", "Add", "Edit", "Delete", "Charts", "Report"])
-with tabs[0]:
+LABELS = ["Find hospitals", "Records", "Add", "Edit", "Delete", "Charts", "Report"]
+active = section_nav(LABELS)
+if active == LABELS[0]:
     finder_tab(manager, analysis)
-with tabs[1]:
+elif active == LABELS[1]:
     records_tab(manager, analysis, raw)
-with tabs[2]:
+elif active == LABELS[2]:
     add_tab(manager)
-with tabs[3]:
+elif active == LABELS[3]:
     edit_tab(manager)
-with tabs[4]:
+elif active == LABELS[4]:
     delete_tab(manager)
-with tabs[5]:
+elif active == LABELS[5]:
     charts_tab(manager, analysis)
-with tabs[6]:
+elif active == LABELS[6]:
     report_tab(manager, analysis, filters, strategy)

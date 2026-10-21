@@ -177,3 +177,32 @@ def section_title(text):
 
 def hero(title, subtitle):
     st.markdown(f'<div class="hero"><h1>{title}</h1><p>{subtitle}</p></div>', unsafe_allow_html=True)
+
+
+def keep_widget_state(skip_prefixes=("add_", "edit_", "delete_")):
+    """Stop Streamlit from forgetting widgets (sliders, selectboxes...) that are not on screen.
+
+    Because only the chosen section is drawn, widgets in other sections would normally be
+    dropped from session state. Re-assigning their values at the start of a run keeps them.
+    Booleans (buttons/checkboxes) and the CRUD form fields are left alone on purpose.
+    """
+    for key in list(st.session_state.keys()):
+        if not isinstance(key, str) or key.startswith(skip_prefixes) or key.startswith(("FormSubmitter", "$$")):
+            continue
+        value = st.session_state[key]
+        if isinstance(value, bool):
+            continue
+        st.session_state[key] = value
+
+
+def section_nav(labels, key="active_section"):
+    """Tab-like navigation that remembers the chosen section across reruns.
+
+    st.tabs always jumps back to the first tab when the script reruns (for example after
+    picking a record in a selectbox). A keyed radio stored in session state does not.
+    """
+    if st.session_state.get(key) not in labels:
+        st.session_state[key] = labels[0]
+    choice = st.radio("Section", labels, horizontal=True, key=key, label_visibility="collapsed")
+    st.divider()
+    return choice

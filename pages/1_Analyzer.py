@@ -5,6 +5,7 @@ import plotly.express as px
 import streamlit as st
 from csv_manager import CSVManager, EXCLUDE_ROWS, FILL_MEDIAN
 from utils import (
+    section_nav, keep_widget_state,
     inject_css, hero, section_title, kpi_card, flash, show_flash, load_manager,
     missing_notice, style_chart, haversine_km, clamp100, yes_score, score_label,
     safe_number, choice_index, DISTRICTS, YES_NO, REFERENCE_PLACES, RATING_COLORS,
@@ -13,6 +14,7 @@ from utils import (
 
 st.set_page_config(page_title="Accessibility Analyzer", page_icon="🩺", layout="wide")
 inject_css()
+keep_widget_state()
 
 DEFAULT_WEIGHTS = {
     "Distance": 25, "ICU": 15, "Emergency": 20, "Wheelchair": 15,
@@ -374,20 +376,21 @@ raw = manager.search(search, picked_districts, emergency_only)
 analysis = manager.apply_missing_strategy(raw, strategy)
 missing_notice(manager, raw, strategy)
 
-tabs = st.tabs(["Score Analyzer", "Records", "Add", "Edit", "Delete", "Charts", "Report"])
-with tabs[0]:
+LABELS = ["Score Analyzer", "Records", "Add", "Edit", "Delete", "Charts", "Report"]
+active = section_nav(LABELS)
+if active == LABELS[0]:
     analyzer_tab(manager, analysis)
-with tabs[1]:
+elif active == LABELS[1]:
     records_tab(manager, analysis, raw)
-with tabs[2]:
+elif active == LABELS[2]:
     add_tab(manager)
-with tabs[3]:
+elif active == LABELS[3]:
     edit_tab(manager)
-with tabs[4]:
+elif active == LABELS[4]:
     delete_tab(manager)
-with tabs[5]:
+elif active == LABELS[5]:
     charts_tab(analysis)
-with tabs[6]:
+elif active == LABELS[6]:
     report_tab(manager, analysis, filters, strategy)
 
 st.info(
