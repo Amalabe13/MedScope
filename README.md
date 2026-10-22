@@ -16,29 +16,6 @@ deleting, charting and exporting data for that CSV.
 
 Each page reads and writes only its own CSV. `Home.py` is the landing page and does not touch any CSV.
 
-## Project structure
-
-```text
-MedScope/
-├── Home.py
-├── csv_manager.py
-├── utils.py
-├── requirements.txt
-├── README.md
-├── .streamlit/
-│   └── config.toml
-├── data/
-│   ├── hospital_readiness.csv
-│   ├── hospital_locations.csv
-│   ├── district_profiles.csv
-│   └── hospital_directory.csv
-└── pages/
-    ├── 1_Analyzer.py
-    ├── 2_Map_Explorer.py
-    ├── 3_District_Analytics.py
-    └── 4_Hospital_Finder.py
-```
-
 ## Setup
 
 Python 3.10 or newer is required.
